@@ -1,0 +1,3 @@
+[
+  "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, a = 0, b = 1, next;\n\n    cout << \"Enter number of terms: \";\n    cin >> n;\n\n    cout << \"Fibonacci Series: \";\n\n    for (int i = 1; i <= n; i++) {\n        cout << a << \" \";\n        next = a + b;\n        a = b;\n        b = next;\n    }\n\n    return 0;\n}"
+]

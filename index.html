@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Buttons</title>
+    <title>Button</title>
     <style>
         body {
             /* A dark background so the green buttons stand out */
@@ -73,37 +73,62 @@
 
         // --- CORE FUNCTIONALITY ---
 
-        fetch('code1.json')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('button-container');
+        async function loadInfiniteCodes() {
+            const container = document.getElementById('button-container');
+            let fileIndex = 1;
+            let keepFetching = true;
 
-                data.forEach(snippet => {
-                    // Create only the button, no text elements
-                    const btn = document.createElement('button');
-                    btn.className = 'green-btn';
+            while (keepFetching) {
+                try {
+                    // Attempt to fetch code1.json, then code2.json, etc.
+                    const response = await fetch(`code${fileIndex}.json`);
                     
-                    btn.addEventListener('click', function(event) {
-                        // Check for the triple click
-                        if (event.detail === 3) {
-                            navigator.clipboard.writeText(snippet).then(() => {
-                                // Visual feedback without text: flash the button white!
-                                const originalColor = btn.style.backgroundColor;
-                                btn.style.backgroundColor = '#ffffff';
-                                
-                                setTimeout(() => {
-                                    btn.style.backgroundColor = originalColor; // Revert back to green
-                                }, 300);
+                    // If the file doesn't exist (e.g. 404 error), break the loop
+                    if (!response.ok) {
+                        keepFetching = false;
+                        break;
+                    }
 
-                            }).catch(err => console.error('Copy failed'));
-                        }
+                    const data = await response.json();
+
+                    data.forEach(snippet => {
+                        // Create only the button, no text elements
+                        const btn = document.createElement('button');
+                        btn.className = 'green-btn';
+                        
+                        btn.addEventListener('click', function(event) {
+                            // Check for the triple click
+                            if (event.detail === 3) {
+                                navigator.clipboard.writeText(snippet).then(() => {
+                                    // Visual feedback without text: flash the button white!
+                                    const originalColor = btn.style.backgroundColor;
+                                    btn.style.backgroundColor = '#ffffff';
+                                    
+                                    setTimeout(() => {
+                                        btn.style.backgroundColor = originalColor; // Revert back to green
+                                    }, 300);
+
+                                }).catch(err => console.error('Copy failed'));
+                            }
+                        });
+
+                        // Add the button to the page
+                        container.appendChild(btn);
                     });
 
-                    // Add the button to the page
-                    container.appendChild(btn);
-                });
-            })
-            .catch(error => console.error('Error loading JSON'));
+                    // Move on to the next file number
+                    fileIndex++;
+
+                } catch (error) {
+                    // Catch network/JSON parsing errors and stop the loop
+                    keepFetching = false;
+                }
+            }
+        }
+
+        // Start the loading process
+        loadInfiniteCodes();
+
     </script>
 </body>
 </html>
