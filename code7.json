@@ -1,0 +1,3 @@
+[
+  "#include <iostream>\n#include <cmath>  // for abs()\n\nusing namespace std;\n\nint main() {\n    double trueValue, approxValue;\n    double absoluteError, relativeError;\n\n    cout << \"Enter true value: \";\n    cin >> trueValue;\n\n    cout << \"Enter approximate value: \";\n    cin >> approxValue;\n\n    absoluteError = abs(trueValue - approxValue);\n\n    if (trueValue != 0) {\n        relativeError = absoluteError / abs(trueValue);\n\n        cout << \"Absolute Error = \" << absoluteError << endl;\n        cout << \"Relative Error = \" << relativeError << endl;\n    } else {\n        cout << \"Relative Error cannot be calculated (true value is 0).\" << endl;\n    }\n\n    return 0;\n}"
+]

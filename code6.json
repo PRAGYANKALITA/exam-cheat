@@ -1,0 +1,3 @@
+[
+  "#include <iostream>\nusing namespace std;\n\nint main() {\n    double num, inverse;\n\n    cout << \"Enter a number: \";\n    cin >> num;\n\n    if (num == 0) {\n        cout << \"Inverse does not exist (division by zero).\" << endl;\n    } else {\n        inverse = 1.0 / num;\n        cout << \"Inverse of \" << num << \" is: \" << inverse << endl;\n    }\n\n    return 0;\n}"
+]
